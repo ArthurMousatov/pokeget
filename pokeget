@@ -1,0 +1,53 @@
+#!/bin/bash
+
+#Heya! The code is kind of bad, so if you want to improve yourself, message me on discord! (Talwat#2277)
+#Code written by Talwat :D
+
+u=""
+
+if [[ $1 == -* ]]; then
+  if [[ $1 == "-small" ]]; then
+    i=$2
+    u="https://gitlab.com/phoneybadger/pokemon-colorscripts/-/raw/main/colorscripts/${i}.txt"
+  elif [[ $1 == "-big" ]]; then
+    i=$2
+    l=${#i}
+
+    while (( l < 3 )); do
+      i=0$i
+      l=${#i}
+    done
+
+    u="https://raw.githubusercontent.com/shinya/pokemon-terminal-art/main/256color/rs/${i}.txt"
+  else
+    echo "Invalid Flag"
+  fi
+elif [[ $1 == "help" ]]; then
+  echo "pokeget [flag] <pokemon>"
+  echo "PS: this program requires internet to work"
+  echo "due to the way the repository files are named, if you use the -small flag you will need to put the name of the pokemon, but if you use the -big flag, it will be their national dex entry number instead."
+  echo ""
+  echo "credits"
+  echo "all sprites and art are originally made by gamefreak, so huge props to them."
+  echo "the big sprites are gotten from https://github.com/shinya/pokemon-terminal-art"
+  echo "the small sprites are gotten from https://gitlab.com/phoneybadger/pokemon-colorscripts/"
+  echo "code written by talwat in bash."
+else
+  i=$1
+  l=${#i}
+
+  while (( l < 3 )); do
+    i=0$i
+    l=${#i}
+  done
+
+  u="https://raw.githubusercontent.com/shinya/pokemon-terminal-art/main/256color/rs/${i}.txt"
+fi
+
+r=$(curl -s -L "$u")
+
+if [[ $r == *"404"* ]]; then
+  echo "Pokemon could not be found (404 Error)"
+else
+  echo "$r"
+fi
