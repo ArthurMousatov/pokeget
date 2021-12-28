@@ -3,8 +3,8 @@ pokeget
 
 Pokeget is a bash script you can use to display cool sprites of pokemon in your terminal.
 ## Examples
-![](examples/example-small1.png)
-![](examples/example-small2.png)
+<img src="examples/example-small1.png" width="500"/>
+<img src="examples/example-small2.png" width="500"/>
 
 ## Installation
 You can install pokeget by doing these commands:
