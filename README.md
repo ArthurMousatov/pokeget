@@ -8,14 +8,12 @@ You can install pokeget by doing these commands:
 ```
 wget https://raw.githubusercontent.com/talwat/pokeget/main/pokeget
 mv pokeget ~/.local/bin
-rm pokeget
 ```
 Which will preform a local installaion, or to install for all users do:
 ```
 wget https://raw.githubusercontent.com/talwat/pokeget/main/pokeg
 et
 sudo mv pokeget /usr/bin
-rm pokeget
 ```
 
 ## Sources
