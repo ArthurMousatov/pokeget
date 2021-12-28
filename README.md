@@ -11,8 +11,7 @@ mv pokeget ~/.local/bin
 ```
 Which will preform a local installaion, or to install for all users do:
 ```
-wget https://raw.githubusercontent.com/talwat/pokeget/main/pokeg
-et
+wget https://raw.githubusercontent.com/talwat/pokeget/main/pokeget
 sudo mv pokeget /usr/bin
 ```
 
