@@ -3,48 +3,80 @@
 #Heya! The code is kind of bad, so if you want to improve yourself, message me on discord! (Talwat#2277)
 #Code written by Talwat :D
 
-u=""
+url=""
+small=false
+shiny=false
+variant=""
 
-if [[ $1 == -* ]]; then
-  if [[ $1 == "-small" ]]; then
-    i=$2
-    u="https://gitlab.com/phoneybadger/pokemon-colorscripts/-/raw/main/colorscripts/${i}.txt"
-  elif [[ $1 == "-big" ]]; then
-    i=$2
-    l=${#i}
+variantAsk=false
 
-    while (( l < 3 )); do
-      i=0$i
-      l=${#i}
-    done
+rawid=0
 
-    u="https://raw.githubusercontent.com/shinya/pokemon-terminal-art/main/256color/rs/${i}.txt"
-  else
-    echo "Invalid Flag"
-  fi
-elif [[ $1 == "help" ]]; then
-  echo "pokeget [flag] <pokemon>"
-  echo "PS: this program requires internet to work"
-  echo "due to the way the repository files are named, if you use the -small flag you will need to put the name of the pokemon, but if you use the -big flag, it will be their national dex entry number instead."
-  echo ""
-  echo "credits"
-  echo "all sprites and art are originally made by gamefreak, so huge props to them."
-  echo "the big sprites are gotten from https://github.com/shinya/pokemon-terminal-art"
-  echo "the small sprites are gotten from https://gitlab.com/phoneybadger/pokemon-colorscripts/"
-  echo "code written by talwat in bash."
-else
-  i=$1
-  l=${#i}
+for var in "$@"
+do
+  case $var in
+    -small)
+      small=true
+    ;;
+    -big)
+      small=false
+    ;;
+    -shiny)
+      shiny=true
+    ;;
+    -variant)
+      variantAsk=true
+    ;;
+    -*)
+      echo "Invalid flag"
+      exit
+    ;;
+    *)
+      if [[ $variantAsk == true ]]; then
+        variant="_${var}"
+        variantAsk=false
+      else
+        rawid=$var
+      fi
+    ;;
+  esac
+done
+if [[ $1 != "help" ]]; then
+  id=$rawid
+  length=${#id}
 
-  while (( l < 3 )); do
-    i=0$i
-    l=${#i}
+  while (( length < 3 )); do
+    id=0$id
+    length=${#id}
   done
-
-  u="https://raw.githubusercontent.com/shinya/pokemon-terminal-art/main/256color/rs/${i}.txt"
+  if [[ $small == true ]]; then
+    size="small"
+  else
+    size="big"
+  fi
+  if [[ $shiny == true ]]; then
+    id="${id}s"
+  fi
+  id="${id}${variant}"
+    
+  url="https://raw.githubusercontent.com/talwat/pokeget/main/pokemon/${size}/${id}.txt"
+else
+  echo "pokeget [flags] <pokemon national dex id>"
+  echo "PS: this program requires internet to work"
+  echo ""
+  echo "flags"
+  echo "  -small: makes the pokemon a smaller sprite. in the pokemon games, this would be the sprite found when browsing the pokemon storage system."
+  echo "  -big: makes the pokemon a big sprite. in the pokemon games, this would be the sprite found of your opponents pokemon while battling."
+  echo "  -shiny: dictates wether the pokemon is shiny, only works on big sprites. (NOTE: the shiny colors are from pokemon reborn, so a lot of them are completely different than the normal shiny colors.)"
+  echo "  -variant: this flag dictates the following things: wether the pokemon is mega, alolan form, pokemon specific things such as arceus, and a few other things."
+  echo "     also, the format of this flag is -variant <number>, so keep that in mind."
+  echo "credits"
+  echo "  pokeget now gets its sprites from pokemon reborn, which is why there may be some pokemon that look different."
+  echo "  all sprites and art are originally made by gamefreak, so huge props to them."
+  echo "  code written by talwat in bash."
 fi
 
-r=$(curl -s -L "$u")
+r=$(curl -s -L "$url")
 
 if [[ $r == *"404"* ]]; then
   echo "Pokemon could not be found (404 Error)"
