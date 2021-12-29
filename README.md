@@ -22,8 +22,6 @@ sudo mv pokeget /usr/bin
 ```
 
 ## Sources
-Pokeget gets it's small sprites from [here](https://gitlab.com/phoneybadger/pokemon-colorscripts/), and it's large sprites from [here](https://github.com/shinya/pokemon-terminal-art).
-
 All sprites are from [Pokemon Reborn](https://www.rebornevo.com/) *(A pokemon fan game)*.
 
 However, all the original sprites and character designs are made by Game Freak.
