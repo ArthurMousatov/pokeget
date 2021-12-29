@@ -22,4 +22,4 @@ Dictates wether the pokemon is shiny. It only works on big sprites.
 ### Variant
 This flag dictates a lot of things, such as: Wether the pokemon is mega, alolan form, pokemon specific things such as arceus, and a few other attributes.
     
-Also, the format of this flag is -variant <number>, so keep that in mind.
+Also, the format of this flag is `-variant <number>`, so keep that in mind.
