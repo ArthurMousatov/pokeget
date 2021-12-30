@@ -3,10 +3,9 @@
 #Heya! The code is kind of bad, so if you want to improve yourself, message me on discord! (Talwat#2277)
 #Code written by Talwat :D
 
-url=""
-small=false
-shiny=false
-variant=""
+small=false #The default size value.
+shiny=false #The default shiny value.
+variant="" #The default variant value.
 
 variantAsk=false
 
@@ -57,8 +56,9 @@ if [[ $1 != "help" ]]; then
   if [[ $shiny == true ]]; then
     id="${id}s"
   fi
-  id="${id}${variant}"
-    
+  if [[ $variant != "" ]]; then
+    id="${id}_${variant}"
+  fi
   url="https://raw.githubusercontent.com/talwat/pokeget/main/pokemon/${size}/${id}.txt"
 else
   echo "pokeget [flags] <pokemon national dex id>"
