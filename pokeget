@@ -32,7 +32,7 @@ do
     ;;
     *)
       if [[ $variantAsk == true ]]; then
-        variant="_${var}"
+        variant="${var}"
         variantAsk=false
       else
         rawid=$var
@@ -76,6 +76,7 @@ else
   echo "  code written by talwat in bash."
 fi
 
+echo "$url"
 r=$(curl -s -L "$url")
 
 if [[ $r == *"404"* ]]; then
