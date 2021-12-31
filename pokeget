@@ -3,12 +3,22 @@
 #Heya! The code is kind of bad, so if you want to improve yourself, message me on discord! (Talwat#2277)
 #Code written by Talwat :D
 
+#Configurable
 small=false #The default size value.
 shiny=false #The default shiny value.
 variant="" #The default variant value.
+pokemon_path="" #The path to a pokemon.zip file, leave blank for getting sprites off the internet. (Eg. $HOME/Documents/pokemon.zip)
 
+if [[ ! -d "$HOME/.config/pokeget" ]]; then
+  mkdir "$HOME/.config/pokeget"
+fi
+if [[ ! -f "$HOME/.config/pokeget/pokeget.conf" ]]; then
+  printf "small=false\nshiny=false\nvariant=\"\"\npokemon_path=\"\"\n" >> "$HOME/.config/pokeget/pokeget.conf"
+fi
+source "$HOME/.config/pokeget/pokeget.conf"
+
+#Non-configurable variables.
 variantAsk=false
-
 rawid=0
 
 for var in "$@"
@@ -50,6 +60,7 @@ if [[ $1 != "help" ]]; then
   done
   if [[ $small == true ]]; then
     size="small"
+    shiny=false
   else
     size="big"
   fi
@@ -59,7 +70,13 @@ if [[ $1 != "help" ]]; then
   if [[ $variant != "" ]]; then
     id="${id}_${variant}"
   fi
-  url="https://raw.githubusercontent.com/talwat/pokeget/main/pokemon/${size}/${id}.txt"
+  if [[ $pokemon_path == "" ]]; then
+    url="https://raw.githubusercontent.com/talwat/pokeget/main/pokemon/${size}/${id}.txt"
+    r=$(curl -s -L "${url}")
+  else
+    r=$(unzip -p "${pokemon_path}" ${size}/"${id}".txt)
+  fi
+
 else
   echo "pokeget [flags] <pokemon national dex id>"
   echo "PS: this program requires internet to work"
@@ -75,9 +92,6 @@ else
   echo "  all sprites and art are originally made by gamefreak, so huge props to them."
   echo "  code written by talwat in bash."
 fi
-
-echo "$url"
-r=$(curl -s -L "$url")
 
 if [[ $r == *"404"* ]]; then
   echo "Pokemon could not be found (404 Error)"
