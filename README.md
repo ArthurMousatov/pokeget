@@ -34,11 +34,11 @@ You can do `pokeget <pokemon national dex id>` to display the sprite.
 If you want a list of flags, you can look at [HELP.md](HELP.md).
 
 ## Dependencies
-To run pokeget you will need bash.
+To run pokeget you will need bash and unzip.
 
 To install pokeget, you might need wget if you dont clone the repository and instead use the install instructions.
 
-Both dependencies are usually installed by default on most linux distros, as this script is designed to run on linux.
+All dependencies are usually installed by default on most linux distros, as this script is designed to run on linux.
 
 ## Known issues
 During testing, some of the unicode symbols have displayed incorrectly, this is still being worked on.
