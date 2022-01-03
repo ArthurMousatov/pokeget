@@ -42,3 +42,5 @@ All dependencies are usually installed by default on most linux distros, as this
 
 ## Known issues
 During testing, some of the unicode symbols have displayed incorrectly, this is still being worked on.
+
+This may only occur with zsh, as using it with other shells has proven more stable.
