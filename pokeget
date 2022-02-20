@@ -1,60 +1,91 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
-#Heya! The code is kind of bad, so if you want to improve yourself, message me on discord! (Talwat#2277)
-#Code written by Talwat :D
+# Heya! The code is kind of bad, so if you want to improve yourself, message me on discord! (Talwat#2277)
+# Code written by Talwat :D
 
-#Configurable
-small=false #The default size value.
-shiny=false #The default shiny value.
-variant="" #The default variant value.
-pokemon_path="" #The path to a pokemon.zip file, leave blank for getting sprites off the internet. (Eg. $HOME/Documents/pokemon.zip)
+# Configurable
+
+small=false     # The default size value.
+shiny=false     # The default shiny value.
+back=false      # The default back value.
+debug=false     # The default debug value.
+variant=""      # The default variant value.
+pokemon_path="" # The path to a pokemon.zip file, leave blank for getting sprites off the internet. (Eg. $HOME/Documents/pokemon.zip)
+
+# Make config file.
 
 if [[ ! -d "$HOME/.config/pokeget" ]]; then
   mkdir "$HOME/.config/pokeget"
 fi
 if [[ ! -f "$HOME/.config/pokeget/pokeget.conf" ]]; then
-  printf "small=false\nshiny=false\nvariant=\"\"\npokemon_path=\"\"\n" >> "$HOME/.config/pokeget/pokeget.conf"
+  printf "# Determines wether the sprite is the small (pc/box) sprite. Doesn't work with 'shiny' and 'back'.
+small=false
+
+# Determines wether the sprite will use the shiny variant.
+shiny=false
+
+# Determines wether the sprite will be facing backwards.
+back=false
+
+# The variant of the sprite. Determines megas, pokemon specific things like arceus, alolan forms, etc...
+variant=\"\"
+
+# The path to the pokemon.zip file. Eg: /home/user/Documents/Pokemon.zip
+# The '~' shortcut is not supported, it must be a full path.
+pokemon_path=\"\"
+" >"$HOME/.config/pokeget/pokeget.conf"
 fi
 source "$HOME/.config/pokeget/pokeget.conf"
 
-#Non-configurable variables.
+# Non-configurable variables
+
 variantAsk=false
 rawid=0
 
-for var in "$@"
-do
+# Get Flags & Input
+
+for var in "$@"; do
   case $var in
-    -small)
-      small=true
+  -small)
+    small=true
     ;;
-    -big)
-      small=false
+  -big)
+    small=false
     ;;
-    -shiny)
-      shiny=true
+  -shiny)
+    shiny=true
     ;;
-    -variant)
-      variantAsk=true
+  -back)
+    back=true
     ;;
-    -*)
-      echo "Invalid flag"
-      exit
+  -variant)
+    variantAsk=true
     ;;
-    *)
-      if [[ $variantAsk == true ]]; then
-        variant="${var}"
-        variantAsk=false
-      else
-        rawid=$var
-      fi
+  -debug)
+    debug=true
+    ;;
+  -*)
+    echo "Invalid flag"
+    exit
+    ;;
+  *)
+    if [[ $variantAsk == true ]]; then
+      variant="${var}"
+      variantAsk=false
+    else
+      rawid=$var
+    fi
     ;;
   esac
 done
+
+# Do stuff based on input
+
 if [[ $1 != "help" ]]; then
   id=$rawid
   length=${#id}
 
-  while (( length < 3 )); do
+  while ((length < 3)); do
     id=0$id
     length=${#id}
   done
@@ -63,35 +94,46 @@ if [[ $1 != "help" ]]; then
     shiny=false
   else
     size="big"
-  fi
-  if [[ $shiny == true ]]; then
-    id="${id}s"
-  fi
-  if [[ $variant != "" ]]; then
-    id="${id}_${variant}"
+    if [[ $shiny == true ]]; then
+      id="${id}s"
+    fi
+    if [[ $back == true ]]; then
+      id="${id}b"
+    fi
+    if [[ $variant != "" ]]; then
+      id="${id}_${variant}"
+    fi
   fi
   if [[ $pokemon_path == "" ]]; then
     url="https://raw.githubusercontent.com/talwat/pokeget/main/pokemon/${size}/${id}.txt"
     r=$(curl -s -L "${url}")
+    if [[ $debug == true ]]; then
+      echo "$url"
+    fi
   else
     r=$(unzip -p "${pokemon_path}" ${size}/"${id}".txt)
   fi
 
+# Help Command
+
 else
   echo "pokeget [flags] <pokemon national dex id>"
-  echo "PS: this program requires internet to work"
+  echo "PS: This program requires internet to work"
   echo ""
-  echo "flags"
-  echo "  -small: makes the pokemon a smaller sprite. in the pokemon games, this would be the sprite found when browsing the pokemon storage system."
-  echo "  -big: makes the pokemon a big sprite. in the pokemon games, this would be the sprite found of your opponents pokemon while battling."
-  echo "  -shiny: dictates wether the pokemon is shiny, only works on big sprites. (NOTE: the shiny colors are from pokemon reborn, so a lot of them are completely different than the normal shiny colors.)"
-  echo "  -variant: this flag dictates the following things: wether the pokemon is mega, alolan form, pokemon specific things such as arceus, and a few other things."
-  echo "     also, the format of this flag is -variant <number>, so keep that in mind."
+  echo "Flags"
+  echo "  -small: Makes the pokemon a smaller sprite. in the pokemon games, this would be the sprite found when browsing the pokemon storage system."
+  echo "  -big: Makes the pokemon a big sprite. in the pokemon games, this would be the sprite found of your opponents pokemon while battling."
+  echo "  -back: Makes the pokemon the back sprite. in the pokemon games, this would be the sprite found of your pokemon while battling. Only works on big sprites."
+  echo "  -shiny: Dictates wether the pokemon is shiny, only works on big sprites. (NOTE: the shiny colors are from pokemon reborn, so a lot of them are completely different than the normal shiny colors.)"
+  echo "  -variant: This flag dictates the following things: wether the pokemon is mega, alolan form, pokemon specific things such as arceus, and a few other things."
+  echo "     Also, the format of this flag is -variant <number>, so keep that in mind."
   echo "credits"
-  echo "  pokeget now gets its sprites from pokemon reborn, which is why there may be some pokemon that look different."
-  echo "  all sprites and art are originally made by gamefreak, so huge props to them."
-  echo "  code written by talwat in bash."
+  echo "  Pokeget now gets its sprites from Pokemon Reborn, which is why there may be some pokemon that look different."
+  echo "  All sprites and art are originally made by gamefreak, so huge props to them."
+  echo "  Code written by Talwat in bash."
 fi
+
+# Print output or 404 message
 
 if [[ $r == *"404"* ]]; then
   echo "Pokemon could not be found (404 Error)"
