@@ -160,6 +160,6 @@ if [[ $r == *"404"* ]]; then
   echo -e "${RED}[!]${RESET} Pokemon could not be found (404 Error)$RESET"
   exit 1
 else
-  echo "$r$RESET"
+  echo -e "$r$RESET"
   exit 0
 fi
