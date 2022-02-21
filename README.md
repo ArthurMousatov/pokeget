@@ -23,13 +23,13 @@ Pokeget has only needs basic dependencies usually preinstalled in GNU/Linux syst
 You can install pokeget by running the install script:
 
 ```bash
-curl https://raw.githubusercontent.com/talwat/pokeget/main/scripts/install.sh | bash
+bash <(curl -s https://raw.githubusercontent.com/talwat/pokeget/main/scripts/install.sh)
 ```
 
 Which will preform a local installation, or to install for all users do:
 
 ```bash
-sudo curl https://raw.githubusercontent.com/talwat/pokeget/main/scripts/install.sh | bash
+sudo bash <(curl -s https://raw.githubusercontent.com/talwat/pokeget/main/scripts/install.sh)
 ```
 
 When updating, make sure you do the same command you did when installing to avoid having multiple copies of pokeget.
