@@ -16,8 +16,8 @@ Pokeget has only needs basic dependencies usually preinstalled in GNU/Linux syst
 
 ## Examples
 
-![pokeget](examples/small1.png)
-![pokeget](examples/big1.png)
+![pokeget](https://github.com/talwat/pokeget/raw/main/examples/small1.png)
+![pokeget](https://github.com/talwat/pokeget/raw/main/examples/big1.png)
 
 ## Installation
 
@@ -48,7 +48,7 @@ rm -rf ~/.config/pokeget
 in your shell to remove a local installation, and to remove a system wide installation do:
 
 ```bash
-sudo rm -rf /usr/bi/pokeget
+sudo rm -rf /usr/bin/pokeget
 ```
 
 *Keep in mind if you did a **system wide installation** all users who used pokeget will have to delete their pokeget config files manually*
