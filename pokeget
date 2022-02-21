@@ -157,9 +157,9 @@ fi
 # Print output or 404 message
 
 if [[ $r == *"404"* ]]; then
-  echo -e "${RED}[!]${RESET} Pokemon could not be found (404 Error)"
+  echo -e "${RED}[!]${RESET} Pokemon could not be found (404 Error)$RESET"
   exit 1
 else
-  echo "$r"
+  echo "$r$RESET"
   exit 0
 fi
