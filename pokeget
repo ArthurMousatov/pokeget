@@ -118,7 +118,7 @@ elif [ "$1" == "help" ]; then
   exit 0
 
 elif [ "$1" == "update" ]; then
-  curl -s https://raw.githubusercontent.com/talwat/pokeget/main/scripts/install.sh | bash
+  bash <(curl -s https://raw.githubusercontent.com/talwat/pokeget/main/scripts/install.sh)
 
 else
   id=$rawid
