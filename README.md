@@ -14,33 +14,52 @@ Pokeget has only needs basic dependencies usually preinstalled in GNU/Linux syst
 
 ## Examples
 
-![pokeget](examples/example-small1.png)
-![pokeget](examples/example-small2.png)
+![pokeget](examples/small1.png)
+![pokeget](examples/big1.png)
 
 ## Installation
 
-*Note: the install commands should be exactly the same for updating.*
-You can install pokeget by doing these commands:
+*Note: the install commands should be exactly the same for updating, and repairing pokeget.*
+You can install pokeget by running the install script:
 
 ```bash
-wget https://raw.githubusercontent.com/talwat/pokeget/main/pokeget
-chmod +x pokeget
-mv pokeget ~/.local/bin
+curl https://raw.githubusercontent.com/talwat/pokeget/main/scripts/install.sh | bash
 ```
 
 Which will preform a local installation, or to install for all users do:
 
 ```bash
-wget https://raw.githubusercontent.com/talwat/pokeget/main/pokeget
-chmod +x pokeget
-sudo mv pokeget /usr/bin
+sudo curl https://raw.githubusercontent.com/talwat/pokeget/main/scripts/install.sh | bash
 ```
+
+When updating, make sure you do the same command you did when installing to avoid having multiple copies of pokeget.
+
+## Uninstallation
+
+Currently there is no uninstall script, however to remove pokeget simply do:
+
+```bash
+rm ~/.local/bin/pokeget
+rm -rf ~/.config/pokeget
+```
+
+in your shell to remove a local installation, and to remove a system wide installation do:
+
+```bash
+sudo rm -rf /usr/bi/pokeget
+```
+
+*Keep in mind if you did a **system wide installation** all users who used pokeget will have to delete their pokeget config files manually*
+
+The pokeget configuration files are located in `~/.config/pokeget` so keep that in mind.
 
 ## Sources
 
-All sprites are from [Pokemon Reborn](https://www.rebornevo.com/) *(A pokemon fan game)*.
+All sprites are taken from [Pokemon Reborn](https://www.rebornevo.com/) *(A pokemon fan game)*.
 
-However, all the original sprites and character designs are made by Game Freak.
+However, the original sprites and character designs are made by Game Freak.
+
+The sprites have been converted into .txt files by me, so feel free to use them in other projects.
 
 ## Usage
 

@@ -3,6 +3,16 @@
 # Heya! The code is kind of bad, so if you want to improve yourself, message me on discord! (Talwat#2277)
 # Code written by Talwat :D
 
+# Color variables
+
+#GREEN="\x1B[32m"
+YELLOW="\x1B[33m"
+#ORANGE="\e[33m"
+CYAN="\x1B[36m"
+RED="\x1B[31m"
+BOLD="\x1B[1m"
+RESET="\x1B[0m"
+
 # Configurable
 
 small=false     # The default size value.
@@ -14,10 +24,10 @@ pokemon_path="" # The path to a pokemon.zip file, leave blank for getting sprite
 
 # Make config file.
 
-if [[ ! -d "$HOME/.config/pokeget" ]]; then
+if [ ! -d "$HOME/.config/pokeget" ]; then
   mkdir "$HOME/.config/pokeget"
 fi
-if [[ ! -f "$HOME/.config/pokeget/pokeget.conf" ]]; then
+if [ ! -f "$HOME/.config/pokeget/pokeget.conf" ]; then
   printf "# Determines wether the sprite is the small (pc/box) sprite. Doesn't work with 'shiny' and 'back'.
 small=false
 
@@ -30,7 +40,7 @@ back=false
 # The variant of the sprite. Determines megas, pokemon specific things like arceus, alolan forms, etc...
 variant=\"\"
 
-# The path to the pokemon.zip file. Eg: /home/user/Documents/Pokemon.zip
+# The path to the pokemon.zip file. Eg: /home/user/Documents/pokemon.zip
 # The '~' shortcut is not supported, it must be a full path.
 pokemon_path=\"\"
 " >"$HOME/.config/pokeget/pokeget.conf"
@@ -65,11 +75,11 @@ for var in "$@"; do
     debug=true
     ;;
   -*)
-    echo "Invalid flag"
+    echo "${RED}[!]${RESET} Invalid flag"
     exit
     ;;
   *)
-    if [[ $variantAsk == true ]]; then
+    if [ $variantAsk == true ]; then
       variant="${var}"
       variantAsk=false
     else
@@ -81,45 +91,19 @@ done
 
 # Do stuff based on input
 
-if [[ $1 != "help" ]]; then
-  id=$rawid
-  length=${#id}
-
-  while ((length < 3)); do
-    id=0$id
-    length=${#id}
-  done
-  if [[ $small == true ]]; then
-    size="small"
-    shiny=false
-  else
-    size="big"
-    if [[ $shiny == true ]]; then
-      id="${id}s"
-    fi
-    if [[ $back == true ]]; then
-      id="${id}b"
-    fi
-    if [[ $variant != "" ]]; then
-      id="${id}_${variant}"
-    fi
-  fi
-  if [[ $pokemon_path == "" ]]; then
-    url="https://raw.githubusercontent.com/talwat/pokeget/main/pokemon/${size}/${id}.txt"
-    r=$(curl -s -L "${url}")
-    if [[ $debug == true ]]; then
-      echo "$url"
-    fi
-  else
-    r=$(unzip -p "${pokemon_path}" ${size}/"${id}".txt)
-  fi
+if [ "$1" == "" ]; then
+  echo -e "${CYAN}[!]${RESET} Use ${BOLD}pokeget help${RESET} to see usage."
+  exit 0
 
 # Help Command
 
-else
+elif [ "$1" == "help" ]; then
   echo "pokeget [flags] <pokemon national dex id>"
-  echo "PS: This program requires internet to work"
+  echo "PS: This program requires internet to work."
   echo ""
+  echo "Commands"
+  echo "  help: Displays this menu."
+  echo "  update: Updates pokeget."
   echo "Flags"
   echo "  -small: Makes the pokemon a smaller sprite. in the pokemon games, this would be the sprite found when browsing the pokemon storage system."
   echo "  -big: Makes the pokemon a big sprite. in the pokemon games, this would be the sprite found of your opponents pokemon while battling."
@@ -131,12 +115,51 @@ else
   echo "  Pokeget now gets its sprites from Pokemon Reborn, which is why there may be some pokemon that look different."
   echo "  All sprites and art are originally made by gamefreak, so huge props to them."
   echo "  Code written by Talwat in bash."
+  exit 0
+
+elif [ "$1" == "update" ]; then
+  curl -s https://raw.githubusercontent.com/talwat/pokeget/main/scripts/install.sh | bash
+
+else
+  id=$rawid
+  length=${#id}
+
+  while ((length < 3)); do
+    id=0$id
+    length=${#id}
+  done
+  if [ $small == true ]; then
+    size="small"
+    shiny=false
+  else
+    size="big"
+    if [ $shiny == true ]; then
+      id="${id}s"
+    fi
+    if [ $back == true ]; then
+      id="${id}b"
+    fi
+  fi
+  if [ "$variant" != "" ]; then
+    id="${id}_${variant}"
+  fi
+  if [ "$pokemon_path" == "" ]; then
+    url="https://raw.githubusercontent.com/talwat/pokeget/main/pokemon/${size}/${id}.txt"
+    r=$(curl -s -L "${url}")
+    if [ $debug == true ]; then
+      echo "${YELLOW}[!]${RESET} $url"
+    fi
+  else
+    r=$(unzip -p "${pokemon_path}" ${size}/"${id}".txt)
+  fi
 fi
 
 # Print output or 404 message
 
 if [[ $r == *"404"* ]]; then
-  echo "Pokemon could not be found (404 Error)"
+  echo -e "${RED}[!]${RESET} Pokemon could not be found (404 Error)"
+  exit 1
 else
   echo "$r"
+  exit 0
 fi
